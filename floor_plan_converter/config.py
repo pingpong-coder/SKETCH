@@ -54,7 +54,10 @@ class Config:
         Initialize configuration with optional overrides.
         
         Args:
-            **kwargs: Configuration parameters to override defaults
+            **kwargs: Configuration parameters to override defaults.
+                     Parameter names should be in lowercase with underscores
+                     (e.g., 'default_wall_thickness') and will be automatically
+                     converted to uppercase class attributes.
         """
         for key, value in kwargs.items():
             if hasattr(self, key.upper()):

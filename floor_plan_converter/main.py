@@ -219,19 +219,26 @@ Examples:
             output_image = cv2.imread(output_path)
             if output_format == 'svg':
                 # For SVG, we need to render a PNG version for visualization
-                temp_output = 'temp_output.png'
-                render_output(
-                    image.shape,
-                    corrected_lines,
-                    rooms=rooms,
-                    output_path=temp_output,
-                    config=config,
-                    add_dimensions=args.add_dimensions,
-                    format='png'
-                )
-                output_image = cv2.imread(temp_output)
-                os.remove(temp_output)
+                import tempfile
+                with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
+                    temp_output = tmp.name
+                
+                try:
+                    render_output(
+                        image.shape,
+                        corrected_lines,
+                        rooms=rooms,
+                        output_path=temp_output,
+                        config=config,
+                        add_dimensions=args.add_dimensions,
+                        format='png'
+                    )
+                    output_image = cv2.imread(temp_output)
+                finally:
+                    if os.path.exists(temp_output):
+                        os.remove(temp_output)
             
+            # Create visualization
             vis_path = create_visualization(image, output_image, corrected_lines, args.visualization)
             print(f"✓ Visualization saved to: {vis_path}")
         

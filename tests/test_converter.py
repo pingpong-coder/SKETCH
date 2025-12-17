@@ -6,10 +6,7 @@ import unittest
 import numpy as np
 import cv2
 import os
-import sys
-
-# Add parent directory to path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import tempfile
 
 from floor_plan_converter.config import Config
 from floor_plan_converter.preprocessor import preprocess_image, apply_gaussian_blur, enhance_contrast
@@ -134,26 +131,29 @@ class TestRenderer(unittest.TestCase):
             ((10, 10, 10, 90), 90, 80),
         ]
         
-        output_path = '/tmp/test_output.png'
+        # Use temporary file for cross-platform compatibility
+        with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as tmp:
+            output_path = tmp.name
         
-        # Render
-        result = render_output(
-            image_shape,
-            lines,
-            output_path=output_path,
-            format='png'
-        )
-        
-        # Check file was created
-        self.assertTrue(os.path.exists(result))
-        
-        # Verify it's a valid image
-        img = cv2.imread(result)
-        self.assertIsNotNone(img)
-        
-        # Clean up
-        if os.path.exists(output_path):
-            os.remove(output_path)
+        try:
+            # Render
+            result = render_output(
+                image_shape,
+                lines,
+                output_path=output_path,
+                format='png'
+            )
+            
+            # Check file was created
+            self.assertTrue(os.path.exists(result))
+            
+            # Verify it's a valid image
+            img = cv2.imread(result)
+            self.assertIsNotNone(img)
+        finally:
+            # Clean up
+            if os.path.exists(output_path):
+                os.remove(output_path)
 
 
 class TestIntegration(unittest.TestCase):
