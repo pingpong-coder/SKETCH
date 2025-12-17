@@ -25,6 +25,23 @@ A Python-based tool that converts hand-drawn floor plan images into clean, CAD-s
 
 ## Installation
 
+### Option 1: Install from source (recommended)
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/pingpong-coder/SKETCH.git
+   cd SKETCH
+   ```
+
+2. **Install the package**
+   ```bash
+   pip install -e .
+   ```
+   
+   This will install the package in editable mode along with all dependencies.
+
+### Option 2: Install dependencies only
+
 1. **Clone the repository**
    ```bash
    git clone https://github.com/pingpong-coder/SKETCH.git
@@ -57,6 +74,10 @@ A Python-based tool that converts hand-drawn floor plan images into clean, CAD-s
 Convert a hand-drawn floor plan to a clean PNG image:
 
 ```bash
+# If installed with pip install -e .
+floor-plan-converter input_image.jpg -o output_drawing.png
+
+# Or run as a module
 python -m floor_plan_converter input_image.jpg -o output_drawing.png
 ```
 
