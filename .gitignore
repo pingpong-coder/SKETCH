@@ -66,4 +66,5 @@ Thumbs.db
 *.png
 *.svg
 *.json
-!examples/output/.gitkeep
+!examples/output/*
+!IMG-20230211-WA0005.jpg
